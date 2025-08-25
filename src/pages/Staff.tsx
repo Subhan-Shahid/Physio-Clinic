@@ -1,4 +1,5 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
+
 import { Plus, Users, UserCheck, UserX, Search, Edit, Trash2, Phone, Mail } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -7,16 +8,23 @@ import { Badge } from "@/components/ui/badge"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { useStorage } from "@/hooks/useStorage"
-import { staffStorage, type Staff } from "@/lib/storage"
+import type { Staff } from "@/lib/storage"
+import { addStaff, updateStaff, deleteStaff, subscribeStaff } from "@/lib/staffFirestore"
+
 import { useToast } from "@/hooks/use-toast"
 
 export default function Staff() {
   const [searchTerm, setSearchTerm] = useState("")
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [editingStaff, setEditingStaff] = useState<Staff | null>(null)
-  const staff = useStorage<Staff>('mindspire_staff', [])
+  const [staff, setStaff] = useState<Staff[]>([])
   const { toast } = useToast()
+
+  // Subscribe to Firestore staff collection
+  useEffect(() => {
+    const unsub = subscribeStaff((list) => setStaff(list))
+    return () => unsub()
+  }, [])
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -45,9 +53,9 @@ export default function Staff() {
     setEditingStaff(null)
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    
+
     const staffData = {
       ...formData,
       role: formData.role as 'admin' | 'therapist' | 'receptionist',
@@ -60,18 +68,27 @@ export default function Staff() {
       ],
     }
 
-    if (editingStaff) {
-      staffStorage.update(editingStaff.id, staffData)
+    try {
+      if (editingStaff) {
+        await updateStaff(editingStaff.id, staffData)
+        toast({
+          title: "Staff Updated",
+          description: "Staff member has been updated successfully.",
+        })
+      } else {
+        await addStaff(staffData)
+        toast({
+          title: "Staff Added",
+          description: "New staff member has been added successfully.",
+        })
+      }
+    } catch (err: any) {
       toast({
-        title: "Staff Updated",
-        description: "Staff member has been updated successfully.",
+        title: "Failed",
+        description: err?.message || "Could not save staff. Please try again.",
+        variant: "destructive",
       })
-    } else {
-      staffStorage.add(staffData)
-      toast({
-        title: "Staff Added",
-        description: "New staff member has been added successfully.",
-      })
+      return
     }
 
     resetForm()
@@ -94,12 +111,20 @@ export default function Staff() {
     setIsDialogOpen(true)
   }
 
-  const handleDelete = (id: string) => {
-    staffStorage.delete(id)
-    toast({
-      title: "Staff Deleted",
-      description: "Staff member has been deleted successfully.",
-    })
+  const handleDelete = async (id: string) => {
+    try {
+      await deleteStaff(id)
+      toast({
+        title: "Staff Deleted",
+        description: "Staff member has been deleted successfully.",
+      })
+    } catch (err: any) {
+      toast({
+        title: "Failed",
+        description: err?.message || "Could not delete staff. Please try again.",
+        variant: "destructive",
+      })
+    }
   }
 
   const filteredStaff = staff.filter(member =>

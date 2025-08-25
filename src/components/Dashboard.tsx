@@ -18,19 +18,19 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
  
-import { useRealtimeStats, useStorage } from "@/hooks/useStorage"
+import { useDashboardStats } from "@/hooks/useDashboardStats"
+import { useStorage } from "@/hooks/useStorage"
 import { type Appointment } from "@/lib/storage"
 import { useSettings } from "@/hooks/useSettings"
 import { formatCurrency } from "@/lib/utils"
 import { useNavigate } from "react-router-dom"
 
 export function Dashboard() {
-  const stats = useRealtimeStats()
-  const appointments = useStorage<Appointment>('mindspire_appointments', [])
+  const { stats, appointments } = useDashboardStats()
   const { settings } = useSettings()
   const navigate = useNavigate()
   
-  // Get today's appointments
+  // Get today's appointments from Firestore data
   const today = new Date().toISOString().split('T')[0]
   const todayAppointments = appointments.filter(apt => apt.date === today)
   const locale = settings.appearance.language || 'en'

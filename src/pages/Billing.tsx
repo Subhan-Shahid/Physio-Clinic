@@ -241,36 +241,47 @@ export default function Billing() {
               <DialogTitle>Create New Invoice</DialogTitle>
             </DialogHeader>
             <div className="grid gap-4 py-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="patient">Patient *</Label>
-                  <Select value={newInvoice.patientId} onValueChange={(value) => setNewInvoice({ ...newInvoice, patientId: value })}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select patient" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {patients.map((patient: any) => (
-                        <SelectItem key={patient.id} value={patient.id}>
-                          {patient.firstName} {patient.lastName}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div>
-                  <Label htmlFor="dueDate">Due Date</Label>
-                  <Input
-                    id="dueDate"
-                    type="date"
-                    value={newInvoice.dueDate}
-                    onChange={(e) => setNewInvoice({ ...newInvoice, dueDate: e.target.value })}
-                  />
+              <div>
+                <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-2">Invoice Details</h3>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="patient">Patient *</Label>
+                    <Select value={newInvoice.patientId} onValueChange={(value) => setNewInvoice({ ...newInvoice, patientId: value })}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select patient" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {patients.map((patient: any) => (
+                          <SelectItem key={patient.id} value={patient.id}>
+                            {patient.firstName} {patient.lastName}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div>
+                    <Label htmlFor="dueDate">Due Date</Label>
+                    <Input
+                      id="dueDate"
+                      type="date"
+                      value={newInvoice.dueDate}
+                      onChange={(e) => setNewInvoice({ ...newInvoice, dueDate: e.target.value })}
+                    />
+                  </div>
                 </div>
               </div>
 
               <div>
-                <Label>Services</Label>
+                <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-2">Services</h3>
                 <div className="space-y-2">
+                  {/* Header row */}
+                  <div className="grid grid-cols-5 gap-2 text-xs font-medium text-muted-foreground px-1">
+                    <div>Services Taken</div>
+                    <div>Qty</div>
+                    <div>Service Cost</div>
+                    <div>Total</div>
+                    <div className="text-right">Actions</div>
+                  </div>
                   {newInvoice.services.map((service, index) => (
                     <div key={index} className="grid grid-cols-5 gap-2 items-end">
                       <div>
@@ -283,17 +294,19 @@ export default function Billing() {
                       <div>
                         <Input
                           type="number"
+                          min={1}
                           placeholder="Qty"
                           value={service.quantity}
-                          onChange={(e) => updateService(index, 'quantity', parseInt(e.target.value) || 0)}
+                          onChange={(e) => updateService(index, 'quantity', Math.max(1, parseInt(e.target.value) || 0))}
                         />
                       </div>
                       <div>
                         <Input
                           type="number"
+                          min={0}
                           placeholder="Rate"
                           value={service.rate}
-                          onChange={(e) => updateService(index, 'rate', parseFloat(e.target.value) || 0)}
+                          onChange={(e) => updateService(index, 'rate', Math.max(0, parseFloat(e.target.value) || 0))}
                         />
                       </div>
                       <div>
@@ -322,18 +335,21 @@ export default function Billing() {
                 </div>
               </div>
 
-              <div className="bg-muted p-4 rounded-lg">
-                <div className="flex justify-between mb-2">
-                  <span>Subtotal:</span>
-                  <span>{formatCurrency(newInvoice.amount, currency, language)}</span>
-                </div>
-                <div className="flex justify-between mb-2">
-                  <span>Tax (10%):</span>
-                  <span>{formatCurrency(newInvoice.tax, currency, language)}</span>
-                </div>
-                <div className="flex justify-between font-bold text-lg">
-                  <span>Total:</span>
-                  <span>{formatCurrency(newInvoice.total, currency, language)}</span>
+              <div>
+                <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-2">Summary</h3>
+                <div className="bg-muted p-4 rounded-lg">
+                  <div className="flex justify-between mb-2">
+                    <span>Subtotal:</span>
+                    <span>{formatCurrency(newInvoice.amount, currency, language)}</span>
+                  </div>
+                  <div className="flex justify-between mb-2">
+                    <span>Tax (10%):</span>
+                    <span>{formatCurrency(newInvoice.tax, currency, language)}</span>
+                  </div>
+                  <div className="flex justify-between font-bold text-lg">
+                    <span>Total:</span>
+                    <span>{formatCurrency(newInvoice.total, currency, language)}</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -412,8 +428,16 @@ export default function Billing() {
               </div>
 
               <div>
-                <Label>Services</Label>
+                <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-2">Services</h3>
                 <div className="space-y-2">
+                  {/* Header row */}
+                  <div className="grid grid-cols-5 gap-2 text-xs font-medium text-muted-foreground px-1">
+                    <div>Services Taken</div>
+                    <div>Qty</div>
+                    <div>Service Cost</div>
+                    <div>Total</div>
+                    <div className="text-right">Actions</div>
+                  </div>
                   {selectedInvoice.services.map((service, index) => (
                     <div key={index} className="grid grid-cols-5 gap-2 items-end">
                       <div>
@@ -430,10 +454,11 @@ export default function Billing() {
                       <div>
                         <Input
                           type="number"
+                          min={1}
                           placeholder="Qty"
                           value={service.quantity}
                           onChange={(e) => {
-                            const qty = parseInt(e.target.value) || 0;
+                            const qty = Math.max(1, parseInt(e.target.value) || 0);
                             const services = [...selectedInvoice.services];
                             services[index] = { ...services[index], quantity: qty, total: qty * services[index].rate };
                             setSelectedInvoice({ ...selectedInvoice, services });
@@ -443,10 +468,11 @@ export default function Billing() {
                       <div>
                         <Input
                           type="number"
+                          min={0}
                           placeholder="Rate"
                           value={service.rate}
                           onChange={(e) => {
-                            const rate = parseFloat(e.target.value) || 0;
+                            const rate = Math.max(0, parseFloat(e.target.value) || 0);
                             const services = [...selectedInvoice.services];
                             services[index] = { ...services[index], rate, total: services[index].quantity * rate };
                             setSelectedInvoice({ ...selectedInvoice, services });
@@ -726,7 +752,7 @@ export default function Billing() {
                   <div>
                     <h3 className="font-semibold text-lg">{invoice.patientName}</h3>
                     <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                      <span><strong>Invoice ID:</strong> {invoice.id.split('_')[2]}</span>
+                      <span><strong>Invoice ID:</strong> {invoice.id.replace(/^inv_/, '')}</span>
                       <span><strong>Amount:</strong> {formatCurrency(invoice.total, currency, language)}</span>
                       <span><strong>Due Date:</strong> {new Date(invoice.dueDate).toLocaleDateString()}</span>
                       {invoice.paidDate && (

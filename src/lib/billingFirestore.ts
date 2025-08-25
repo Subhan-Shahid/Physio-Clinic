@@ -33,6 +33,11 @@ export const updateInvoice = (id: string, updates: Partial<Invoice>) =>
 export const deleteInvoice = (id: string) => deleteDoc(doc(col, id));
 
 export const subscribeInvoices = (cb: (list: Invoice[]) => void) =>
-  onSnapshot(query(col, orderBy("createdAt", "desc")), (snap) =>
-    cb(snap.docs.map((d) => ({ id: d.id, ...(d.data() as Invoice) })))
+  onSnapshot(
+    query(col, orderBy("createdAt", "desc")),
+    (snap) => cb(snap.docs.map((d) => ({ id: d.id, ...(d.data() as Invoice) }))),
+    (error) => {
+      // eslint-disable-next-line no-console
+      console.error("subscribeInvoices error:", error);
+    }
   );

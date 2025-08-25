@@ -29,7 +29,8 @@ import {
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
-import { useRealtimeStats, useNotifications } from "@/hooks/useStorage"
+import { useNotifications } from "@/hooks/useStorage"
+import { useDashboardStats } from "@/hooks/useDashboardStats"
 import { NewPatientDialog } from "@/components/NewPatientDialog"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { notificationStorage, type Notification } from "@/lib/storage"
@@ -64,7 +65,7 @@ export function AppSidebar() {
 
   const items = userRole === 'admin' ? adminItems : therapistItems
   const isCollapsed = state === "collapsed"
-  const stats = useRealtimeStats()
+  const { stats } = useDashboardStats()
   const { unreadCount } = useNotifications()
 
   const getNavCls = ({ isActive }: { isActive: boolean }) =>
