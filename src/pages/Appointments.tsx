@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Plus, Calendar, Clock, Search, Eye, Edit, Trash2, CheckCircle, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,24 +9,27 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
-import { useStorage } from "@/hooks/useStorage";
-import { staffStorage, type Appointment, type Patient } from "@/lib/storage";
+import { type Appointment, type Patient, type Staff } from "@/lib/storage";
 import { subscribeAppointments, addAppointment as addAppointmentFs, updateAppointment as updateAppointmentFs, deleteAppointment as deleteAppointmentFs } from "@/lib/appointmentsFirestore";
 import { subscribePatients } from "@/lib/patientsFirestore";
+import { subscribeStaff } from "@/lib/staffFirestore";
 
 export default function Appointments() {
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [patients, setPatients] = useState<Patient[]>([]);
+  const [staff, setStaff] = useState<Staff[]>([]);
 
   useEffect(() => {
     const unsubA = subscribeAppointments(setAppointments);
     const unsubP = subscribePatients(setPatients);
+    const unsubS = subscribeStaff(setStaff);
     return () => {
       unsubA();
       unsubP();
+      unsubS();
     };
   }, []);
-  const staff = useStorage('mindspire_staff');
+
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
   const [selectedAppointment, setSelectedAppointment] = useState<Appointment | null>(null);
@@ -45,8 +48,17 @@ export default function Appointments() {
     notes: "",
   });
 
-  const therapists = staff.filter((s: any) => s.role === 'therapist' && s.status === 'active');
-  
+  const therapists = useMemo(() => {
+    const filtered = staff.filter((s) => s.role === 'therapist' && s.status === 'active');
+    const seen = new Set<string>();
+    return filtered.filter((t) => {
+      const key = `${(t.firstName || '').trim().toLowerCase()} ${(t.lastName || '').trim().toLowerCase()}`;
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+  }, [staff]);
+
   const filteredAppointments = appointments.filter(appointment => {
     const matchesSearch = appointment.patientName.toLowerCase().includes(searchTerm.toLowerCase()) ||
       appointment.therapistName.toLowerCase().includes(searchTerm.toLowerCase());
@@ -170,7 +182,7 @@ export default function Appointments() {
                     <SelectValue placeholder="Select therapist" />
                   </SelectTrigger>
                   <SelectContent>
-                    {therapists.map((therapist: any) => (
+                    {therapists.map((therapist: Staff) => (
                       <SelectItem key={therapist.id} value={therapist.id}>
                         {therapist.firstName} {therapist.lastName}
                       </SelectItem>

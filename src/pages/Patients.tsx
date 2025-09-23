@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Plus, Search, Eye, Edit, Trash2, Phone, Mail, Calendar, UserCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,18 +9,24 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
-import { staffStorage, type Patient } from "@/lib/storage";
+import { type Patient, type Staff } from "@/lib/storage";
 import { subscribePatients, addPatient as addPatientFs, updatePatient as updatePatientFs, deletePatient as deletePatientFs } from "@/lib/patientsFirestore";
-import { useStorage } from "@/hooks/useStorage";
+import { subscribeStaff } from "@/lib/staffFirestore";
 
 export default function Patients() {
   const [patients, setPatients] = useState<Patient[]>([]);
-  const staff = useStorage('mindspire_staff');
+  const [staff, setStaff] = useState<Staff[]>([]);
 
   useEffect(() => {
     const unsub = subscribePatients(setPatients);
     return unsub;
   }, []);
+  
+  useEffect(() => {
+    const unsub = subscribeStaff(setStaff);
+    return unsub;
+  }, []);
+
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
@@ -43,7 +49,16 @@ export default function Patients() {
     assignedTherapist: "",
   });
 
-  const therapists = staff.filter((s: any) => s.role === 'therapist' && s.status === 'active');
+  const therapists = useMemo(() => {
+    const filtered = staff.filter((s) => s.role === 'therapist' && s.status === 'active');
+    const seen = new Set<string>();
+    return filtered.filter((t) => {
+      const key = `${(t.firstName || '').trim().toLowerCase()} ${(t.lastName || '').trim().toLowerCase()}`;
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+  }, [staff]);
 
   const filteredPatients = patients.filter(patient =>
     `${patient.firstName} ${patient.lastName}`.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -239,7 +254,7 @@ export default function Patients() {
                     <SelectValue placeholder="Select therapist" />
                   </SelectTrigger>
                   <SelectContent>
-                    {therapists.map((therapist: any) => (
+                    {therapists.map((therapist: Staff) => (
                       <SelectItem key={therapist.id} value={`${therapist.firstName} ${therapist.lastName}`}>
                         {therapist.firstName} {therapist.lastName}
                       </SelectItem>
@@ -613,7 +628,7 @@ export default function Patients() {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      {therapists.map((therapist: any) => (
+                      {therapists.map((therapist: Staff) => (
                         <SelectItem key={therapist.id} value={`${therapist.firstName} ${therapist.lastName}`}>
                           {therapist.firstName} {therapist.lastName}
                         </SelectItem>

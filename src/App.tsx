@@ -13,7 +13,6 @@ import Staff from "./pages/Staff";
 import Analytics from "./pages/Analytics";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
-import { initializeData } from "./lib/storage";
 import AppLayout from "./components/AppLayout";
 import ScrollToTop from "./components/ScrollToTop";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -23,9 +22,7 @@ import Login from "./pages/Login";
 const queryClient = new QueryClient();
 
 const App = () => {
-  useEffect(() => {
-    initializeData();
-  }, []);
+  useEffect(() => {}, []);
 
   return (
     <QueryClientProvider client={queryClient}>

@@ -259,7 +259,7 @@ export const storage = {
     
     items[index] = updatedItem;
     storage.set(key, items);
-    return updatedItem;
+    return updatedItem as T;
   },
 
   delete: (key: string, id: string): boolean => {
@@ -444,55 +444,10 @@ export const notificationStorage = {
     storage.get<Notification>(STORAGE_KEYS.NOTIFICATIONS).filter(n => !n.isRead),
 };
 
-// Initialize with empty data (no demo data)
+// Initialize with empty data (no demo staff)
 export const initializeData = () => {
-  // Only initialize if no data exists - starts empty
-  if (storage.get<Patient>(STORAGE_KEYS.PATIENTS).length === 0) {
-    // Initialize with some staff members only
-    const initialStaff: Omit<Staff, 'id' | 'createdAt' | 'updatedAt'>[] = [
-      {
-        firstName: "Sarah",
-        lastName: "Wilson",
-        email: "sarah.wilson@mindspire.com",
-        phone: "+1-555-1001",
-        role: "therapist",
-        specialization: "Orthopedic Physiotherapy",
-        licenseNumber: "PT-12345",
-        hireDate: "2020-01-15",
-        status: "active",
-        schedule: [
-          { day: "Monday", startTime: "08:00", endTime: "17:00", isAvailable: true },
-          { day: "Tuesday", startTime: "08:00", endTime: "17:00", isAvailable: true },
-          { day: "Wednesday", startTime: "08:00", endTime: "17:00", isAvailable: true },
-          { day: "Thursday", startTime: "08:00", endTime: "17:00", isAvailable: true },
-          { day: "Friday", startTime: "08:00", endTime: "15:00", isAvailable: true },
-        ]
-      },
-      {
-        firstName: "Mike",
-        lastName: "Chen",
-        email: "mike.chen@mindspire.com",
-        phone: "+1-555-1002",
-        role: "therapist",
-        specialization: "Sports Medicine",
-        licenseNumber: "PT-12346",
-        hireDate: "2021-03-20",
-        status: "active",
-        schedule: [
-          { day: "Monday", startTime: "09:00", endTime: "18:00", isAvailable: true },
-          { day: "Tuesday", startTime: "09:00", endTime: "18:00", isAvailable: true },
-          { day: "Wednesday", startTime: "09:00", endTime: "18:00", isAvailable: true },
-          { day: "Thursday", startTime: "09:00", endTime: "18:00", isAvailable: true },
-          { day: "Friday", startTime: "09:00", endTime: "16:00", isAvailable: true },
-        ]
-      }
-    ];
-
-    // Only add staff members for system functionality
-    initialStaff.forEach(staff => staffStorage.add(staff));
-  }
-
-  // Ensure settings exist
+  // Do not seed any staff or demo content. Keep storage empty by default.
+  // Ensure settings exist only.
   if (!localStorage.getItem(STORAGE_KEYS.SETTINGS)) {
     try {
       localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(DEFAULT_SETTINGS));
