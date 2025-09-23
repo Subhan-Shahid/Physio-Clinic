@@ -104,12 +104,12 @@ export default function Analytics() {
           <CardContent>
             <div className="space-y-4">
               {Object.entries(appointmentTypes).map(([type, count]) => (
-                <div key={type} className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
+                <div key={type} className="flex items-start sm:items-center justify-between gap-2">
+                  <div className="flex items-start sm:items-center gap-3 min-w-0">
                     <div className="bg-primary/10 p-2 rounded-lg">
                       <Activity className="h-4 w-4 text-primary" />
                     </div>
-                    <span className="capitalize">{type}</span>
+                    <span className="capitalize truncate max-w-[200px] sm:max-w-none">{type}</span>
                   </div>
                   <div className="text-right">
                     <div className="font-semibold">{count}</div>

@@ -130,7 +130,7 @@ export default function Appointments() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
         <div>
           <h1 className="text-3xl font-bold text-foreground">Appointments</h1>
           <p className="text-muted-foreground">Manage patient appointments and scheduling</p>
@@ -142,7 +142,7 @@ export default function Appointments() {
               Schedule Appointment
             </Button>
           </DialogTrigger>
-          <DialogContent className="max-w-lg">
+          <DialogContent className="max-w-full sm:max-w-lg">
             <DialogHeader>
               <DialogTitle>Schedule New Appointment</DialogTitle>
             </DialogHeader>
@@ -305,7 +305,7 @@ export default function Appointments() {
       </div>
 
       {/* Date and Search */}
-      <div className="flex gap-4">
+      <div className="flex flex-col md:flex-row gap-4">
         <div className="flex-1">
           <Label htmlFor="selectedDate">Select Date</Label>
           <Input
@@ -337,14 +337,14 @@ export default function Appointments() {
           .map((appointment) => (
           <Card key={appointment.id} className="hover:shadow-md transition-shadow">
             <CardContent className="p-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-4">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div className="flex items-start sm:items-center gap-4 justify-center">
                   <div className="bg-primary/10 p-3 rounded-full">
                     <Clock className="h-6 w-6 text-primary" />
                   </div>
-                  <div>
+                  <div className="text-center sm:text-left">
                     <h3 className="font-semibold text-lg">{appointment.patientName}</h3>
-                    <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                    <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 md:gap-4 text-sm text-muted-foreground">
                       <span><strong>Therapist:</strong> {appointment.therapistName}</span>
                       <span><strong>Time:</strong> {appointment.time}</span>
                       <span><strong>Duration:</strong> {appointment.duration} min</span>
@@ -357,7 +357,7 @@ export default function Appointments() {
                     )}
                   </div>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 self-center sm:self-auto">
                   <Badge variant={getStatusColor(appointment.status)}>
                     {appointment.status.charAt(0).toUpperCase() + appointment.status.slice(1)}
                   </Badge>
@@ -421,7 +421,7 @@ export default function Appointments() {
 
       {/* View Appointment Dialog */}
       <Dialog open={isViewDialogOpen} onOpenChange={setIsViewDialogOpen}>
-        <DialogContent className="max-w-lg">
+        <DialogContent className="max-w-full sm:max-w-lg">
           <DialogHeader>
             <DialogTitle>Appointment Details</DialogTitle>
           </DialogHeader>
@@ -498,7 +498,7 @@ export default function Appointments() {
 
       {/* Edit Appointment Dialog */}
       <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-        <DialogContent className="max-w-lg">
+        <DialogContent className="max-w-full sm:max-w-lg">
           <DialogHeader>
             <DialogTitle>Edit Appointment</DialogTitle>
           </DialogHeader>

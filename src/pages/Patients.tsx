@@ -128,12 +128,12 @@ export default function Patients() {
               Add Patient
             </Button>
           </DialogTrigger>
-          <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+          <DialogContent className="max-w-full sm:max-w-2xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle>Add New Patient</DialogTitle>
             </DialogHeader>
             <div className="grid gap-4 py-4">
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <Label htmlFor="firstName">First Name *</Label>
                   <Input
@@ -154,7 +154,7 @@ export default function Patients() {
                 </div>
               </div>
               
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <Label htmlFor="email">Email *</Label>
                   <Input
@@ -176,7 +176,7 @@ export default function Patients() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <Label htmlFor="dateOfBirth">Date of Birth</Label>
                   <Input
@@ -211,7 +211,7 @@ export default function Patients() {
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <Label htmlFor="emergencyContact">Emergency Contact</Label>
                   <Input
@@ -364,8 +364,8 @@ export default function Patients() {
         {filteredPatients.map((patient) => (
           <Card key={patient.id} className="hover:shadow-md transition-shadow">
             <CardContent className="p-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-4">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div className="flex items-start sm:items-center gap-4">
                   <div className="bg-primary/10 p-3 rounded-full">
                     <UserCheck className="h-6 w-6 text-primary" />
                   </div>
@@ -373,7 +373,7 @@ export default function Patients() {
                     <h3 className="font-semibold text-lg">
                       {patient.firstName} {patient.lastName}
                     </h3>
-                    <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                    <div className="flex flex-wrap items-center gap-2 md:gap-4 text-sm text-muted-foreground">
                       <div className="flex items-center gap-1">
                         <Mail className="h-4 w-4" />
                         {patient.email}
@@ -398,7 +398,7 @@ export default function Patients() {
                     )}
                   </div>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 sm:self-auto self-start">
                   <Badge variant={getStatusColor(patient.status)}>
                     {patient.status.charAt(0).toUpperCase() + patient.status.slice(1)}
                   </Badge>
@@ -440,7 +440,7 @@ export default function Patients() {
 
       {/* View Patient Dialog */}
       <Dialog open={isViewDialogOpen} onOpenChange={setIsViewDialogOpen}>
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-w-full sm:max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Patient Details</DialogTitle>
           </DialogHeader>
@@ -548,7 +548,7 @@ export default function Patients() {
 
       {/* Edit Patient Dialog */}
       <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-w-full sm:max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Edit Patient</DialogTitle>
           </DialogHeader>

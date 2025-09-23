@@ -144,7 +144,7 @@ export default function Inventory() {
               Add Item
             </Button>
           </DialogTrigger>
-          <DialogContent className="max-w-2xl">
+          <DialogContent className="max-w-full sm:max-w-2xl">
             <DialogHeader>
               <DialogTitle>{editingItem ? 'Edit' : 'Add New'} Inventory Item</DialogTitle>
               <DialogDescription>
@@ -341,9 +341,9 @@ export default function Inventory() {
       {/* Search and Filters */}
       <Card>
         <CardHeader>
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between gap-3 flex-col sm:flex-row">
             <CardTitle>Inventory Items</CardTitle>
-            <div className="relative w-72">
+            <div className="relative w-full sm:w-72">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
                 placeholder="Search items..."
@@ -357,8 +357,8 @@ export default function Inventory() {
         <CardContent>
           <div className="space-y-4">
             {filteredInventory.map((item) => (
-              <div key={item.id} className="flex items-center justify-between p-4 border rounded-lg hover:bg-accent/50">
-                <div className="flex items-center gap-4">
+              <div key={item.id} className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 p-4 border rounded-lg hover:bg-accent/50">
+                <div className="flex items-start sm:items-center gap-4">
                   <div className="bg-primary/10 p-3 rounded-lg">
                     <Package className="h-5 w-5 text-primary" />
                   </div>
@@ -369,7 +369,7 @@ export default function Inventory() {
                   </div>
                 </div>
                 
-                <div className="flex items-center gap-4">
+                <div className="flex items-start sm:items-center gap-4 w-full sm:w-auto justify-between sm:justify-end">
                   <div className="text-right">
                     <p className="font-medium">
                       {item.currentStock} {item.unit}

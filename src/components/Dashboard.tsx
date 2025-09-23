@@ -128,17 +128,17 @@ export function Dashboard() {
           </CardHeader>
           <CardContent className="space-y-4">
             {todayAppointments.length > 0 ? todayAppointments.slice(0, 4).map((appointment, index) => (
-              <div key={index} className="flex items-center justify-between p-3 bg-gradient-subtle rounded-lg">
-                <div className="flex items-center gap-3">
+              <div key={index} className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-3 bg-gradient-subtle rounded-lg">
+                <div className="flex items-start sm:items-center gap-3">
                   <div className="bg-primary/10 p-2 rounded-lg">
                     <Clock className="h-4 w-4 text-primary" />
                   </div>
-                  <div>
-                    <p className="font-medium text-foreground">{appointment.patientName}</p>
+                  <div className="min-w-0">
+                    <p className="font-medium text-foreground truncate max-w-[160px] sm:max-w-none">{appointment.patientName}</p>
                     <p className="text-sm text-muted-foreground capitalize">{appointment.type}</p>
                   </div>
                 </div>
-                <div className="text-right">
+                <div className="text-left sm:text-right">
                   <p className="font-medium text-foreground">{appointment.time}</p>
                   <Badge 
                     variant={appointment.status === 'completed' ? 'default' : 'secondary'}

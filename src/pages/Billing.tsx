@@ -367,7 +367,7 @@ export default function Billing() {
 
       {/* Edit Invoice Dialog */}
       <Dialog open={isEditDialogOpen} onOpenChange={(open) => { setIsEditDialogOpen(open); if (!open) setSelectedInvoice(null); }}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-w-full sm:max-w-4xl sm:max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Edit Invoice</DialogTitle>
           </DialogHeader>
@@ -431,7 +431,7 @@ export default function Billing() {
                 <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-2">Services</h3>
                 <div className="space-y-2">
                   {/* Header row */}
-                  <div className="grid grid-cols-5 gap-2 text-xs font-medium text-muted-foreground px-1">
+                  <div className="hidden sm:grid grid-cols-5 gap-2 text-xs font-medium text-muted-foreground px-1">
                     <div>Services Taken</div>
                     <div>Qty</div>
                     <div>Service Cost</div>
@@ -439,7 +439,7 @@ export default function Billing() {
                     <div className="text-right">Actions</div>
                   </div>
                   {selectedInvoice.services.map((service, index) => (
-                    <div key={index} className="grid grid-cols-5 gap-2 items-end">
+                    <div key={index} className="grid grid-cols-1 sm:grid-cols-5 gap-2 items-end">
                       <div>
                         <Input
                           placeholder="Service name"
@@ -479,10 +479,10 @@ export default function Billing() {
                           }}
                         />
                       </div>
-                      <div>
+                      <div className="sm:col-span-1">
                         <Input value={formatCurrency(service.total, currency, language)} readOnly className="bg-muted" />
                       </div>
-                      <div>
+                      <div className="sm:col-span-1">
                         <Button
                           type="button"
                           variant="outline"
@@ -709,7 +709,7 @@ export default function Billing() {
       </div>
 
       {/* Filters */}
-      <div className="flex gap-4">
+      <div className="flex flex-col md:flex-row gap-4">
         <div className="flex-1">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -744,14 +744,14 @@ export default function Billing() {
           .map((invoice) => (
           <Card key={invoice.id} className="hover:shadow-md transition-shadow">
             <CardContent className="p-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-4">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div className="flex items-start sm:items-center gap-4">
                   <div className="bg-primary/10 p-3 rounded-full">
                     <FileText className="h-6 w-6 text-primary" />
                   </div>
                   <div>
                     <h3 className="font-semibold text-lg">{invoice.patientName}</h3>
-                    <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                    <div className="flex flex-wrap items-center gap-2 md:gap-4 text-sm text-muted-foreground">
                       <span><strong>Invoice ID:</strong> {invoice.id.replace(/^inv_/, '')}</span>
                       <span><strong>Amount:</strong> {formatCurrency(invoice.total, currency, language)}</span>
                       <span><strong>Due Date:</strong> {new Date(invoice.dueDate).toLocaleDateString()}</span>
@@ -764,7 +764,7 @@ export default function Billing() {
                     </div>
                   </div>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 sm:self-auto self-start">
                   <Badge variant={getStatusColor(invoice.status)}>
                     {invoice.status.charAt(0).toUpperCase() + invoice.status.slice(1)}
                   </Badge>
@@ -818,7 +818,7 @@ export default function Billing() {
 
       {/* View Invoice Dialog */}
       <Dialog open={isViewDialogOpen} onOpenChange={setIsViewDialogOpen}>
-        <DialogContent className="max-w-2xl">
+        <DialogContent className="max-w-full sm:max-w-2xl">
           <DialogHeader>
             <DialogTitle>Invoice Details</DialogTitle>
           </DialogHeader>
@@ -857,7 +857,7 @@ export default function Billing() {
 
               <div>
                 <Label>Services</Label>
-                <div className="border rounded-lg overflow-hidden mt-2">
+                <div className="border rounded-lg overflow-x-auto mt-2">
                   <table className="w-full">
                     <thead className="bg-muted">
                       <tr>

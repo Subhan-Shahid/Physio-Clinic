@@ -101,20 +101,20 @@ export function AppSidebar() {
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
               placeholder="Search patients, appointments..."
-              className="pl-10 bg-background/50"
+              className="w-full pl-10 bg-background/50"
             />
           </div>
-          <div className="flex gap-2">
+          <div className="flex flex-col sm:flex-row gap-2">
             <Button 
               variant="medical" 
               size="sm" 
-              className="flex-1"
+              className="w-full sm:flex-1"
               onClick={() => setIsNewPatientDialogOpen(true)}
             >
               <Users className="h-4 w-4" />
               New Patient
             </Button>
-            <Button variant="outline" size="sm" onClick={() => setIsNotificationsOpen(true)}>
+            <Button className="w-full sm:w-auto" variant="outline" size="sm" onClick={() => setIsNotificationsOpen(true)}>
               <Bell className="h-4 w-4" />
               {unreadCount > 0 && (
                 <Badge variant="destructive" className="ml-1 h-4 px-1 text-xs">
@@ -194,7 +194,7 @@ export function AppSidebar() {
 
     {/* Notifications Dialog */}
     <Dialog open={isNotificationsOpen} onOpenChange={setIsNotificationsOpen}>
-      <DialogContent className="max-w-lg">
+      <DialogContent className="max-w-full sm:max-w-lg">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Bell className="h-5 w-5" /> Notifications

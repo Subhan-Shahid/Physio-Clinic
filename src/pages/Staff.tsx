@@ -152,7 +152,7 @@ export default function Staff() {
               Add Staff Member
             </Button>
           </DialogTrigger>
-          <DialogContent className="max-w-2xl">
+          <DialogContent className="max-w-full sm:max-w-2xl">
             <DialogHeader>
               <DialogTitle>{editingStaff ? 'Edit' : 'Add New'} Staff Member</DialogTitle>
               <DialogDescription>
@@ -160,7 +160,7 @@ export default function Staff() {
               </DialogDescription>
             </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <Label htmlFor="firstName">First Name</Label>
                   <Input
@@ -181,7 +181,7 @@ export default function Staff() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <Label htmlFor="email">Email</Label>
                   <Input
@@ -203,7 +203,7 @@ export default function Staff() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <Label htmlFor="role">Role</Label>
                   <Select value={formData.role} onValueChange={(value) => setFormData({...formData, role: value})}>
@@ -231,7 +231,7 @@ export default function Staff() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <Label htmlFor="specialization">Specialization (Optional)</Label>
                   <Input
@@ -322,9 +322,9 @@ export default function Staff() {
       {/* Search and Staff List */}
       <Card>
         <CardHeader>
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between gap-3 flex-col sm:flex-row">
             <CardTitle>Staff Members</CardTitle>
-            <div className="relative w-72">
+            <div className="relative w-full sm:w-72">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
                 placeholder="Search staff..."
@@ -338,8 +338,8 @@ export default function Staff() {
         <CardContent>
           <div className="space-y-4">
             {filteredStaff.map((member) => (
-              <div key={member.id} className="flex items-center justify-between p-4 border rounded-lg hover:bg-accent/50">
-                <div className="flex items-center gap-4">
+              <div key={member.id} className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 p-4 border rounded-lg hover:bg-accent/50">
+                <div className="flex items-start sm:items-center gap-4">
                   <div className="bg-primary/10 p-3 rounded-lg">
                     <Users className="h-5 w-5 text-primary" />
                   </div>
@@ -352,7 +352,7 @@ export default function Staff() {
                   </div>
                 </div>
                 
-                <div className="flex items-center gap-4">
+                <div className="flex items-start sm:items-center gap-4 w-full sm:w-auto justify-between sm:justify-end">
                   <div className="text-sm text-muted-foreground">
                     <div className="flex items-center gap-1 mb-1">
                       <Mail className="h-3 w-3" />
