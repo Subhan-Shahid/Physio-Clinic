@@ -56,7 +56,7 @@ const therapistItems = [
 ]
 
 export function AppSidebar() {
-  const { state } = useSidebar()
+  const { state, isMobile, setOpenMobile } = useSidebar()
   const location = useLocation()
   const currentPath = location.pathname
   const [userRole] = useState<'admin' | 'therapist' | 'receptionist'>('admin') // Mock role
@@ -67,6 +67,13 @@ export function AppSidebar() {
   const isCollapsed = state === "collapsed"
   const { stats } = useDashboardStats()
   const { unreadCount } = useNotifications()
+
+  // Function to handle navigation click - closes mobile sidebar
+  const handleNavClick = () => {
+    if (isMobile) {
+      setOpenMobile(false)
+    }
+  }
 
   const getNavCls = ({ isActive }: { isActive: boolean }) =>
     isActive 
@@ -140,6 +147,7 @@ export function AppSidebar() {
                     <NavLink 
                       to={item.url} 
                       end 
+                      onClick={handleNavClick}
                       className={({ isActive }) => `
                         flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200
                         ${getNavCls({ isActive })}

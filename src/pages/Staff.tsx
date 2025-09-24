@@ -139,75 +139,83 @@ export default function Staff() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-foreground">Staff Management</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold text-foreground">Staff Management</h1>
           <p className="text-muted-foreground">Manage your team members and their roles</p>
         </div>
         
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
-            <Button className="bg-primary hover:bg-primary/90" onClick={resetForm}>
+            <Button className="bg-primary hover:bg-primary/90 w-full sm:w-auto" onClick={resetForm}>
               <Plus className="h-4 w-4 mr-2" />
-              Add Staff Member
+              <span className="hidden sm:inline">Add Staff Member</span>
+              <span className="sm:hidden">Add Staff</span>
             </Button>
           </DialogTrigger>
-          <DialogContent className="max-w-full sm:max-w-2xl">
+          <DialogContent className="max-w-[95vw] sm:max-w-2xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle>{editingStaff ? 'Edit' : 'Add New'} Staff Member</DialogTitle>
               <DialogDescription>
                 {editingStaff ? 'Update the staff member details.' : 'Enter the details for the new staff member.'}
               </DialogDescription>
             </DialogHeader>
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-4 px-1">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="firstName">First Name</Label>
+                <div className="space-y-2">
+                  <Label htmlFor="firstName" className="text-sm font-medium">First Name</Label>
                   <Input
                     id="firstName"
                     value={formData.firstName}
                     onChange={(e) => setFormData({...formData, firstName: e.target.value})}
+                    className="h-10"
                     required
                   />
                 </div>
-                <div>
-                  <Label htmlFor="lastName">Last Name</Label>
+                <div className="space-y-2">
+                  <Label htmlFor="lastName" className="text-sm font-medium">Last Name</Label>
                   <Input
                     id="lastName"
                     value={formData.lastName}
                     onChange={(e) => setFormData({...formData, lastName: e.target.value})}
+                    className="h-10"
                     required
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="email">Email</Label>
+                <div className="space-y-2">
+                  <Label htmlFor="email" className="text-sm font-medium">Email</Label>
                   <Input
                     id="email"
                     type="email"
                     value={formData.email}
                     onChange={(e) => setFormData({...formData, email: e.target.value})}
+                    className="h-10"
+                    placeholder="john@example.com"
                     required
                   />
                 </div>
-                <div>
-                  <Label htmlFor="phone">Phone</Label>
+                <div className="space-y-2">
+                  <Label htmlFor="phone" className="text-sm font-medium">Phone</Label>
                   <Input
                     id="phone"
+                    type="tel"
                     value={formData.phone}
                     onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                    className="h-10"
+                    placeholder="+1 (555) 123-4567"
                     required
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="role">Role</Label>
+                <div className="space-y-2">
+                  <Label htmlFor="role" className="text-sm font-medium">Role</Label>
                   <Select value={formData.role} onValueChange={(value) => setFormData({...formData, role: value})}>
-                    <SelectTrigger>
+                    <SelectTrigger className="h-10">
                       <SelectValue placeholder="Select role" />
                     </SelectTrigger>
                     <SelectContent>
@@ -217,10 +225,10 @@ export default function Staff() {
                     </SelectContent>
                   </Select>
                 </div>
-                <div>
-                  <Label htmlFor="status">Status</Label>
+                <div className="space-y-2">
+                  <Label htmlFor="status" className="text-sm font-medium">Status</Label>
                   <Select value={formData.status} onValueChange={(value: "active" | "inactive") => setFormData({...formData, status: value})}>
-                    <SelectTrigger>
+                    <SelectTrigger className="h-10">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -232,42 +240,45 @@ export default function Staff() {
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="specialization">Specialization (Optional)</Label>
+                <div className="space-y-2">
+                  <Label htmlFor="specialization" className="text-sm font-medium">Specialization (Optional)</Label>
                   <Input
                     id="specialization"
                     value={formData.specialization}
                     onChange={(e) => setFormData({...formData, specialization: e.target.value})}
+                    className="h-10"
                     placeholder="e.g., Orthopedic Physiotherapy"
                   />
                 </div>
-                <div>
-                  <Label htmlFor="licenseNumber">License Number (Optional)</Label>
+                <div className="space-y-2">
+                  <Label htmlFor="licenseNumber" className="text-sm font-medium">License Number (Optional)</Label>
                   <Input
                     id="licenseNumber"
                     value={formData.licenseNumber}
                     onChange={(e) => setFormData({...formData, licenseNumber: e.target.value})}
+                    className="h-10"
                     placeholder="e.g., PT-12345"
                   />
                 </div>
               </div>
 
-              <div>
-                <Label htmlFor="hireDate">Hire Date</Label>
+              <div className="space-y-2">
+                <Label htmlFor="hireDate" className="text-sm font-medium">Hire Date</Label>
                 <Input
                   id="hireDate"
                   type="date"
                   value={formData.hireDate}
                   onChange={(e) => setFormData({...formData, hireDate: e.target.value})}
+                  className="h-10"
                   required
                 />
               </div>
 
-              <div className="flex gap-3 pt-4">
-                <Button type="submit" className="flex-1">
+              <div className="flex flex-col sm:flex-row gap-3 pt-6">
+                <Button type="submit" className="flex-1 h-11">
                   {editingStaff ? 'Update Staff Member' : 'Add Staff Member'}
                 </Button>
-                <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)}>
+                <Button type="button" variant="outline" className="h-11" onClick={() => setIsDialogOpen(false)}>
                   Cancel
                 </Button>
               </div>
@@ -277,44 +288,44 @@ export default function Staff() {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-4 grid-cols-2 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Staff</CardTitle>
+            <CardTitle className="text-xs sm:text-sm font-medium">Total Staff</CardTitle>
             <Users className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{staff.length}</div>
+            <div className="text-xl sm:text-2xl font-bold">{staff.length}</div>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Active Staff</CardTitle>
+            <CardTitle className="text-xs sm:text-sm font-medium">Active Staff</CardTitle>
             <UserCheck className="h-4 w-4 text-success" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-success">{activeStaff.length}</div>
+            <div className="text-xl sm:text-2xl font-bold text-success">{activeStaff.length}</div>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Therapists</CardTitle>
+            <CardTitle className="text-xs sm:text-sm font-medium">Therapists</CardTitle>
             <UserCheck className="h-4 w-4 text-secondary" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{therapists.length}</div>
+            <div className="text-xl sm:text-2xl font-bold">{therapists.length}</div>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Inactive Staff</CardTitle>
+            <CardTitle className="text-xs sm:text-sm font-medium">Inactive Staff</CardTitle>
             <UserX className="h-4 w-4 text-warning" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-warning">{staff.length - activeStaff.length}</div>
+            <div className="text-xl sm:text-2xl font-bold text-warning">{staff.length - activeStaff.length}</div>
           </CardContent>
         </Card>
       </div>
@@ -322,8 +333,8 @@ export default function Staff() {
       {/* Search and Staff List */}
       <Card>
         <CardHeader>
-          <div className="flex items-center justify-between gap-3 flex-col sm:flex-row">
-            <CardTitle>Staff Members</CardTitle>
+          <div className="flex items-center justify-between gap-4 flex-col sm:flex-row">
+            <CardTitle className="text-lg sm:text-xl">Staff Members</CardTitle>
             <div className="relative w-full sm:w-72">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
@@ -338,45 +349,58 @@ export default function Staff() {
         <CardContent>
           <div className="space-y-4">
             {filteredStaff.map((member) => (
-              <div key={member.id} className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 p-4 border rounded-lg hover:bg-accent/50">
-                <div className="flex items-start sm:items-center gap-4">
-                  <div className="bg-primary/10 p-3 rounded-lg">
+              <div key={member.id} className="flex flex-col gap-4 p-4 border rounded-lg hover:bg-accent/50">
+                {/* Top Section: Avatar, Name, Role */}
+                <div className="flex items-center gap-4">
+                  <div className="bg-primary/10 p-3 rounded-lg flex-shrink-0">
                     <Users className="h-5 w-5 text-primary" />
                   </div>
-                  <div>
-                    <h3 className="font-semibold">{member.firstName} {member.lastName}</h3>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-semibold text-base truncate">{member.firstName} {member.lastName}</h3>
                     <p className="text-sm text-muted-foreground capitalize">{member.role}</p>
                     {member.specialization && (
-                      <p className="text-sm text-muted-foreground">{member.specialization}</p>
+                      <p className="text-xs text-muted-foreground truncate">{member.specialization}</p>
                     )}
                   </div>
-                </div>
-                
-                <div className="flex items-start sm:items-center gap-4 w-full sm:w-auto justify-between sm:justify-end">
-                  <div className="text-sm text-muted-foreground">
-                    <div className="flex items-center gap-1 mb-1">
-                      <Mail className="h-3 w-3" />
-                      {member.email}
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <Phone className="h-3 w-3" />
-                      {member.phone}
-                    </div>
-                  </div>
-                  
                   <Badge 
                     variant={member.status === 'active' ? 'default' : 'secondary'}
-                    className="text-xs"
+                    className="text-xs flex-shrink-0"
                   >
                     {member.status}
                   </Badge>
+                </div>
+                
+                {/* Bottom Section: Contact Info and Actions */}
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                  <div className="text-sm text-muted-foreground space-y-1 flex-1 min-w-0">
+                    <div className="flex items-center gap-2">
+                      <Mail className="h-3 w-3 flex-shrink-0" />
+                      <span className="truncate">{member.email}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Phone className="h-3 w-3 flex-shrink-0" />
+                      <span className="truncate">{member.phone}</span>
+                    </div>
+                  </div>
                   
-                  <div className="flex gap-2">
-                    <Button variant="outline" size="sm" onClick={() => handleEdit(member)}>
-                      <Edit className="h-4 w-4" />
+                  <div className="flex gap-2 justify-end sm:justify-start flex-shrink-0">
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      onClick={() => handleEdit(member)}
+                      className="flex-1 sm:flex-initial"
+                    >
+                      <Edit className="h-4 w-4 sm:mr-2" />
+                      <span className="hidden sm:inline">Edit</span>
                     </Button>
-                    <Button variant="outline" size="sm" onClick={() => handleDelete(member.id)}>
-                      <Trash2 className="h-4 w-4" />
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      onClick={() => handleDelete(member.id)}
+                      className="flex-1 sm:flex-initial"
+                    >
+                      <Trash2 className="h-4 w-4 sm:mr-2" />
+                      <span className="hidden sm:inline">Delete</span>
                     </Button>
                   </div>
                 </div>
