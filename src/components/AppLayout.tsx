@@ -5,6 +5,7 @@ import { AppSidebar } from "@/components/AppSidebar";
 import { useStorage } from "@/hooks/useStorage";
 import { notificationStorage } from "@/lib/storage";
 import { useSettings } from "@/hooks/useSettings";
+import { useAuth } from "@/hooks/useAuth";
 
 const AppLayout = () => {
   // Subscribe to changes in invoices and inventory to drive notifications
@@ -12,6 +13,7 @@ const AppLayout = () => {
   const inventory = useStorage<any>("mindspire_inventory");
   const appointments = useStorage<any>("mindspire_appointments");
   const { settings } = useSettings();
+  const { user, logout } = useAuth();
 
   useEffect(() => {
     const today = new Date();
@@ -173,6 +175,17 @@ const AppLayout = () => {
           <header className="sticky top-0 z-40 h-14 border-b bg-card/50 backdrop-blur-sm px-4 flex items-center">
             <SidebarTrigger />
             <h1 className="ml-3 text-base font-semibold">{settings.clinic.name || 'Mindspire'}</h1>
+            <div className="ml-auto flex items-center gap-3">
+              {user?.displayName && (
+                <span className="text-sm text-muted-foreground hidden sm:inline">{user.displayName}</span>
+              )}
+              <button
+                onClick={logout}
+                className="px-3 py-1.5 text-sm border rounded-md hover:bg-accent"
+              >
+                Logout
+              </button>
+            </div>
           </header>
           <main className="flex-1 p-6 overflow-auto">
             <Outlet />

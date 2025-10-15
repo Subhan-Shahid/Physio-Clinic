@@ -1,15 +1,16 @@
 // src/components/ProtectedRoute.tsx
 import React from "react";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
-import { useAuth } from "@/hooks/useAuth";
+import { isLocalAuthed } from "@/lib/localAuth";
 
 const ProtectedRoute: React.FC = () => {
-  const { user, loading } = useAuth();
   const location = useLocation();
+  const localAuth = isLocalAuthed();
+  const isOnLogin = location.pathname === "/login";
 
-  if (loading) return <div className="p-6">Loading...</div>;
-  if (!user) return <Navigate to="/login" replace state={{ from: location }} />;
-  return <Outlet />;
+  if (localAuth) return <Outlet />;
+  if (isOnLogin) return null;
+  return <Navigate to="/login" replace state={{ from: location.pathname }} />;
 };
 
 export default ProtectedRoute;
