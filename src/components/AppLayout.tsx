@@ -6,14 +6,34 @@ import { useStorage } from "@/hooks/useStorage";
 import { notificationStorage } from "@/lib/storage";
 import { useSettings } from "@/hooks/useSettings";
 import { useAuth } from "@/hooks/useAuth";
+import { Sun, Moon, Monitor } from "lucide-react";
 
 const AppLayout = () => {
   // Subscribe to changes in invoices and inventory to drive notifications
   const invoices = useStorage<any>("mindspire_invoices");
   const inventory = useStorage<any>("mindspire_inventory");
   const appointments = useStorage<any>("mindspire_appointments");
-  const { settings } = useSettings();
+  const { settings, update } = useSettings();
   const { user, logout } = useAuth();
+
+  const toggleTheme = () => {
+    const currentTheme = settings.appearance.theme;
+    const nextTheme = currentTheme === 'light' ? 'dark' : currentTheme === 'dark' ? 'system' : 'light';
+    update({ appearance: { ...settings.appearance, theme: nextTheme } });
+  };
+
+  const getThemeIcon = () => {
+    switch (settings.appearance.theme) {
+      case 'light':
+        return <Sun className="h-5 w-5" />;
+      case 'dark':
+        return <Moon className="h-5 w-5" />;
+      case 'system':
+        return <Monitor className="h-5 w-5" />;
+      default:
+        return <Sun className="h-5 w-5" />;
+    }
+  };
 
   useEffect(() => {
     const today = new Date();
@@ -180,6 +200,13 @@ const AppLayout = () => {
                 <span className="text-sm text-muted-foreground hidden sm:inline">{user.displayName}</span>
               )}
               <button
+                onClick={toggleTheme}
+                className="p-2 border rounded-md hover:bg-accent transition-colors"
+                title={`Current theme: ${settings.appearance.theme}`}
+              >
+                {getThemeIcon()}
+              </button>
+              <button
                 onClick={logout}
                 className="px-3 py-1.5 text-sm border rounded-md hover:bg-accent"
               >
@@ -187,7 +214,7 @@ const AppLayout = () => {
               </button>
             </div>
           </header>
-          <main className="flex-1 p-6 overflow-auto">
+          <main className="flex-1 p-4 sm:p-6 overflow-y-auto overflow-x-hidden">
             <Outlet />
           </main>
         </div>
