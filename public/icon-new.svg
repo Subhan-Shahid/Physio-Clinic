@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <pattern id="logoPattern" patternUnits="userSpaceOnUse" width="64" height="64">
+      <image href="./logo.jpg" x="0" y="0" width="64" height="64"/>
+    </pattern>
+  </defs>
+  <rect width="64" height="64" fill="url(#logoPattern)" rx="8" ry="8"/>
+</svg>

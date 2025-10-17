@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Icon Converter</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .converter { margin: 20px 0; }
+        canvas { border: 1px solid #ccc; margin: 10px; }
+        button { padding: 10px 20px; margin: 5px; background: #007bff; color: white; border: none; cursor: pointer; }
+        button:hover { background: #0056b3; }
+    </style>
+</head>
+<body>
+    <h1>Icon Converter for Physio Clinic</h1>
+    <p>This tool will help you convert your logo to different icon sizes.</p>
+    
+    <div class="converter">
+        <input type="file" id="imageInput" accept="image/*">
+        <br><br>
+        <div id="canvasContainer"></div>
+        <br>
+        <button onclick="convertAllSizes()">Generate All Icon Sizes</button>
+    </div>
+
+    <script>
+        const sizes = [
+            { name: 'favicon.ico', size: 32 },
+            { name: 'favicon-16x16.png', size: 16 },
+            { name: 'favicon-32x32.png', size: 32 },
+            { name: 'icon-48x48.png', size: 48 },
+            { name: 'apple-touch-icon.png', size: 180 },
+            { name: 'icon-192x192.png', size: 192 },
+            { name: 'icon-512x512.png', size: 512 }
+        ];
+
+        let originalImage = null;
+
+        document.getElementById('imageInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    originalImage = new Image();
+                    originalImage.onload = function() {
+                        document.getElementById('canvasContainer').innerHTML = '';
+                        createPreview();
+                    };
+                    originalImage.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        function createPreview() {
+            const container = document.getElementById('canvasContainer');
+            
+            sizes.forEach(iconSize => {
+                const canvas = document.createElement('canvas');
+                canvas.width = iconSize.size;
+                canvas.height = iconSize.size;
+                canvas.title = iconSize.name;
+                
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(originalImage, 0, 0, iconSize.size, iconSize.size);
+                
+                const label = document.createElement('div');
+                label.textContent = `${iconSize.name} (${iconSize.size}x${iconSize.size})`;
+                
+                const downloadBtn = document.createElement('button');
+                downloadBtn.textContent = 'Download';
+                downloadBtn.onclick = () => downloadCanvas(canvas, iconSize.name);
+                
+                const wrapper = document.createElement('div');
+                wrapper.style.display = 'inline-block';
+                wrapper.style.margin = '10px';
+                wrapper.style.textAlign = 'center';
+                
+                wrapper.appendChild(label);
+                wrapper.appendChild(canvas);
+                wrapper.appendChild(downloadBtn);
+                
+                container.appendChild(wrapper);
+            });
+        }
+
+        function downloadCanvas(canvas, filename) {
+            const link = document.createElement('a');
+            link.download = filename;
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+
+        function convertAllSizes() {
+            if (!originalImage) {
+                alert('Please select an image first!');
+                return;
+            }
+            
+            sizes.forEach(iconSize => {
+                const canvas = document.createElement('canvas');
+                canvas.width = iconSize.size;
+                canvas.height = iconSize.size;
+                
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(originalImage, 0, 0, iconSize.size, iconSize.size);
+                
+                downloadCanvas(canvas, iconSize.name);
+            });
+        }
+
+        // Auto-load the logo if it exists
+        window.onload = function() {
+            const img = new Image();
+            img.onload = function() {
+                originalImage = img;
+                createPreview();
+            };
+            img.src = './logo.jpg';
+        };
+    </script>
+</body>
+</html>
