@@ -7,7 +7,7 @@ export function useSettings() {
   useEffect(() => {
     const handleUpdate = (e: any) => {
       try {
-        if (e?.detail?.key === 'mindspire_settings') {
+        if (e?.detail?.key === 'devora_settings') {
           setSettings(e.detail.data as Settings);
           return;
         }
@@ -17,7 +17,7 @@ export function useSettings() {
     };
 
     const handleStorage = (e: StorageEvent) => {
-      if (e.key === 'mindspire_settings') {
+      if (e.key === 'devora_settings') {
         setSettings(settingsStorage.get());
       }
     };

@@ -89,12 +89,16 @@ export function AppSidebar() {
       {/* Header */}
       <div className="p-4 border-b bg-gradient-primary">
         <div className="flex items-center gap-3">
-          <div className="bg-white/20 p-2 rounded-lg">
-            <Heart className="h-6 w-6 text-white" />
+          <div className="bg-white/20 p-1.5 rounded-lg flex items-center justify-center">
+            <img
+              src="/devora-removebg-preview.png"
+              alt="DevOra logo"
+              className="h-8 w-8 object-contain"
+            />
           </div>
           {!isCollapsed && (
             <div>
-              <h1 className="text-white font-bold text-lg">Mindspire</h1>
+              <h1 className="text-white font-bold text-lg">DevOra</h1>
               <p className="text-white/80 text-xs">Physiotherapy Software</p>
             </div>
           )}

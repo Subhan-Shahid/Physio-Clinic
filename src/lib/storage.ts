@@ -1,4 +1,4 @@
-// Local Storage utilities for Mindspire Physiotherapy Software
+// Local Storage utilities for DevOra Physiotherapy Software
 
 export interface Patient {
   id: string;
@@ -150,13 +150,13 @@ export interface Settings {
 
 // Storage keys
 const STORAGE_KEYS = {
-  PATIENTS: 'mindspire_patients',
-  APPOINTMENTS: 'mindspire_appointments',
-  INVOICES: 'mindspire_invoices',
-  INVENTORY: 'mindspire_inventory',
-  STAFF: 'mindspire_staff',
-  NOTIFICATIONS: 'mindspire_notifications',
-  SETTINGS: 'mindspire_settings',
+  PATIENTS: 'devora_patients',
+  APPOINTMENTS: 'devora_appointments',
+  INVOICES: 'devora_invoices',
+  INVENTORY: 'devora_inventory',
+  STAFF: 'devora_staff',
+  NOTIFICATIONS: 'devora_notifications',
+  SETTINGS: 'devora_settings',
 } as const;
 
 // Default settings
@@ -164,17 +164,17 @@ const DEFAULT_SETTINGS: Settings = {
   profile: {
     firstName: 'Dr. Sarah',
     lastName: 'Wilson',
-    email: 'sarah.wilson@mindspire.com',
+    email: 'sarah.wilson@devora.com',
     phone: '+1-555-1001',
     specialization: 'Orthopedic Physiotherapy',
     licenseNumber: 'PT-12345',
   },
   clinic: {
-    name: 'Mindspire Physiotherapy',
+    name: 'DevOra Physiotherapy',
     address: '123 Healthcare Drive, Medical District',
     phone: '+1-555-0100',
-    email: 'info@mindspire.com',
-    website: 'www.mindspire.com',
+    email: 'info@devora.com',
+    website: 'www.devora.com',
     taxId: '12-3456789',
   },
   notifications: {

@@ -46,7 +46,7 @@ export function useStorage<T>(key: string, initialValue: T[] = []) {
 
 // Hook for managing notifications with real-time updates
 export function useNotifications() {
-  const notifications = useStorage('mindspire_notifications', []);
+  const notifications = useStorage('devora_notifications', []);
   const unreadCount = notifications.filter((n: any) => !n.isRead).length;
 
   return {
@@ -58,10 +58,10 @@ export function useNotifications() {
 
 // Hook for real-time stats
 export function useRealtimeStats() {
-  const patients = useStorage('mindspire_patients', []);
-  const appointments = useStorage('mindspire_appointments', []);
-  const invoices = useStorage('mindspire_invoices', []);
-  const inventory = useStorage('mindspire_inventory', []);
+  const patients = useStorage('devora_patients', []);
+  const appointments = useStorage('devora_appointments', []);
+  const invoices = useStorage('devora_invoices', []);
+  const inventory = useStorage('devora_inventory', []);
 
   const today = new Date().toISOString().split('T')[0];
 

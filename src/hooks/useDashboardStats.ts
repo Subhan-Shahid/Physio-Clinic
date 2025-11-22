@@ -10,7 +10,7 @@ export function useDashboardStats() {
   const [invoices, setInvoices] = useState<any[]>([]);
   
   // Keep inventory from localStorage for now
-  const inventory = useStorage('mindspire_inventory', []);
+  const inventory = useStorage('devora_inventory', []);
 
   useEffect(() => {
     const unsubscribePatients = subscribePatients(setPatients);

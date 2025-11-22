@@ -10,9 +10,9 @@ import { Sun, Moon, Monitor } from "lucide-react";
 
 const AppLayout = () => {
   // Subscribe to changes in invoices and inventory to drive notifications
-  const invoices = useStorage<any>("mindspire_invoices");
-  const inventory = useStorage<any>("mindspire_inventory");
-  const appointments = useStorage<any>("mindspire_appointments");
+  const invoices = useStorage<any>("devora_invoices");
+  const inventory = useStorage<any>("devora_inventory");
+  const appointments = useStorage<any>("devora_appointments");
   const { settings, update } = useSettings();
   const { user, logout } = useAuth();
 
@@ -194,7 +194,7 @@ const AppLayout = () => {
           {/* Global header with sidebar toggle */}
           <header className="sticky top-0 z-40 h-14 border-b bg-card/50 backdrop-blur-sm px-4 flex items-center">
             <SidebarTrigger />
-            <h1 className="ml-3 text-base font-semibold">{settings.clinic.name || 'Mindspire'}</h1>
+            <h1 className="ml-3 text-base font-semibold">{settings.clinic.name || 'DevOra'}</h1>
             <div className="ml-auto flex items-center gap-3">
               {user?.displayName && (
                 <span className="text-sm text-muted-foreground hidden sm:inline">{user.displayName}</span>
