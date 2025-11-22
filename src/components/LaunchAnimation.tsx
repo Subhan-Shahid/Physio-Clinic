@@ -137,11 +137,15 @@ const LaunchAnimation = ({ onComplete }: LaunchAnimationProps) => {
               animate="visible"
             >
               <motion.div
-                className="w-24 h-24 bg-gradient-to-br from-blue-500 to-green-500 rounded-2xl flex items-center justify-center shadow-2xl"
+                className="flex items-center justify-center"
                 variants={pulseVariants}
                 animate="pulse"
               >
-                <Heart className="w-12 h-12 text-white" />
+                <img
+                  src="/devora-removebg-preview.png"
+                  alt="DevOra logo"
+                  className="w-24 h-24 object-contain drop-shadow-2xl"
+                />
               </motion.div>
               
               {/* Floating Icons */}
