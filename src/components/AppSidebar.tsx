@@ -12,7 +12,8 @@ import {
   Activity,
   Heart,
   Bell,
-  Search
+  Search,
+  Shield
 } from "lucide-react"
 
 import {
@@ -34,6 +35,7 @@ import { useDashboardStats } from "@/hooks/useDashboardStats"
 import { NewPatientDialog } from "@/components/NewPatientDialog"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { notificationStorage, type Notification } from "@/lib/storage"
+import { useAuth } from "@/hooks/useAuth"
 
 // Navigation items for different roles
 const adminItems = [
@@ -43,6 +45,7 @@ const adminItems = [
   { title: "Billing", url: "/billing", icon: CreditCard },
   { title: "Inventory", url: "/inventory", icon: Package },
   { title: "Staff", url: "/staff", icon: UsersRound },
+  { title: "Users", url: "/users", icon: Shield },
   { title: "Analytics", url: "/analytics", icon: BarChart3 },
   { title: "Settings", url: "/settings", icon: Settings },
 ]
@@ -55,15 +58,28 @@ const therapistItems = [
   { title: "Progress Notes", url: "/notes", icon: Heart },
 ]
 
+const receptionistItems = [
+  { title: "Dashboard", url: "/", icon: LayoutDashboard },
+  { title: "Patients", url: "/patients", icon: Users },
+  { title: "Appointments", url: "/appointments", icon: Calendar },
+  { title: "Billing", url: "/billing", icon: CreditCard },
+]
+
 export function AppSidebar() {
   const { state, isMobile, setOpenMobile } = useSidebar()
   const location = useLocation()
   const currentPath = location.pathname
-  const [userRole] = useState<'admin' | 'therapist' | 'receptionist'>('admin') // Mock role
+  const { user } = useAuth()
+  const userRole = user?.role || 'admin'
   const [isNewPatientDialogOpen, setIsNewPatientDialogOpen] = useState(false)
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false)
 
-  const items = userRole === 'admin' ? adminItems : therapistItems
+  const items = userRole === 'admin'
+    ? adminItems
+    : userRole === 'receptionist'
+      ? receptionistItems
+      : therapistItems
+
   const isCollapsed = state === "collapsed"
   const { stats } = useDashboardStats()
   const { unreadCount } = useNotifications()

@@ -112,7 +112,7 @@ export default function Analytics() {
                     <span className="capitalize truncate max-w-[200px] sm:max-w-none">{type}</span>
                   </div>
                   <div className="text-right">
-                    <div className="font-semibold">{count}</div>
+                    <div className="font-semibold">{count as number}</div>
                     <div className="text-sm text-muted-foreground">
                       {appointments.length > 0 ? (((count as number) / appointments.length) * 100).toFixed(1) : 0}%
                     </div>

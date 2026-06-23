@@ -97,6 +97,18 @@ export interface Staff {
   updatedAt: string;
 }
 
+export interface UserAccount {
+  id: string;
+  username: string;
+  fullName: string;
+  email: string;
+  role: 'admin' | 'therapist' | 'receptionist';
+  status: 'active' | 'inactive';
+  password?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface Notification {
   id: string;
   type: 'appointment' | 'payment' | 'inventory' | 'system';

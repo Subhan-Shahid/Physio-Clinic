@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Plus, Search, Eye, Edit, Trash2, DollarSign, CreditCard, AlertTriangle, FileText } from "lucide-react";
+import { Plus, Search, Eye, Edit, Trash2, DollarSign, CreditCard, AlertTriangle, FileText, Printer } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -14,6 +14,8 @@ import { subscribeInvoices, addInvoice as addInvoiceFs, updateInvoice as updateI
 import { subscribePatients } from "@/lib/patientsFirestore";
 import { useSettings } from "@/hooks/useSettings";
 import { formatCurrency } from "@/lib/utils";
+import ReceiptDialog from "@/components/ReceiptDialog";
+
 
 export default function Billing() {
   const [invoices, setInvoices] = useState<Invoice[]>([]);
@@ -35,6 +37,9 @@ export default function Billing() {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isViewDialogOpen, setIsViewDialogOpen] = useState(false);
+  const [isReceiptDialogOpen, setIsReceiptDialogOpen] = useState(false);
+  const [receiptInvoice, setReceiptInvoice] = useState<Invoice | null>(null);
+
 
   const [newInvoice, setNewInvoice] = useState({
     patientId: "",
@@ -788,8 +793,20 @@ export default function Billing() {
                         setSelectedInvoice(invoice);
                         setIsViewDialogOpen(true);
                       }}
+                      title="View Details"
                     >
                       <Eye className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => {
+                        setReceiptInvoice(invoice);
+                        setIsReceiptDialogOpen(true);
+                      }}
+                      title="Print / View Receipt"
+                    >
+                      <Printer className="h-4 w-4 text-primary" />
                     </Button>
                     <Button
                       variant="ghost"
@@ -798,6 +815,7 @@ export default function Billing() {
                         setSelectedInvoice(invoice);
                         setIsEditDialogOpen(true);
                       }}
+                      title="Edit"
                     >
                       <Edit className="h-4 w-4" />
                     </Button>
@@ -805,10 +823,12 @@ export default function Billing() {
                       variant="ghost"
                       size="sm"
                       onClick={() => handleDeleteInvoice(invoice)}
+                      title="Delete"
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>
                   </div>
+
                 </div>
               </div>
             </CardContent>
@@ -896,7 +916,7 @@ export default function Billing() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4 text-sm text-muted-foreground">
+              <div className="grid grid-cols-2 gap-4 text-sm text-muted-foreground border-b pb-4">
                 <div>
                   <Label>Created</Label>
                   <p>{new Date(selectedInvoice.createdAt).toLocaleString()}</p>
@@ -906,10 +926,36 @@ export default function Billing() {
                   <p>{new Date(selectedInvoice.updatedAt).toLocaleString()}</p>
                 </div>
               </div>
+
+              <div className="flex justify-end gap-2 pt-2">
+                <Button
+                  variant="outline"
+                  onClick={() => setIsViewDialogOpen(false)}
+                >
+                  Close
+                </Button>
+                <Button
+                  onClick={() => {
+                    setReceiptInvoice(selectedInvoice);
+                    setIsReceiptDialogOpen(true);
+                  }}
+                  className="gap-2 bg-primary text-white hover:bg-primary-light"
+                >
+                  <Printer className="h-4 w-4" />
+                  Print / View Receipt
+                </Button>
+              </div>
             </div>
           )}
         </DialogContent>
       </Dialog>
+
+      <ReceiptDialog
+        invoice={receiptInvoice}
+        isOpen={isReceiptDialogOpen}
+        onOpenChange={setIsReceiptDialogOpen}
+      />
+
 
       {filteredInvoices.length === 0 && (
         <Card>

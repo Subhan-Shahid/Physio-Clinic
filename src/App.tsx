@@ -10,6 +10,7 @@ import Appointments from "./pages/Appointments";
 import Billing from "./pages/Billing";
 import Inventory from "./pages/Inventory";
 import Staff from "./pages/Staff";
+import Users from "./pages/Users";
 import Analytics from "./pages/Analytics";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
@@ -64,6 +65,7 @@ const App = () => {
                     <Route path="billing" element={<Billing />} />
                     <Route path="inventory" element={<Inventory />} />
                     <Route path="staff" element={<Staff />} />
+                    <Route path="users" element={<Users />} />
                     <Route path="analytics" element={<Analytics />} />
                     <Route path="settings" element={<Settings />} />
                   </Route>

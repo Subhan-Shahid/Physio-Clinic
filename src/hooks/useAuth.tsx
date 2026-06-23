@@ -1,7 +1,8 @@
 // src/hooks/useAuth.tsx
 import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { auth } from "@/lib/firebase";
-import { setLocalAuthed } from "@/lib/localAuth";
+import { setLocalAuthed, getLocalUser } from "@/lib/localAuth";
+import { findUserByUsername } from "@/lib/usersFirestore";
 import {
   GoogleAuthProvider,
   onAuthStateChanged,
@@ -15,7 +16,7 @@ import {
 } from "firebase/auth";
 
 interface AuthContextValue {
-  user: User | null;
+  user: any;
   loading: boolean;
   signInWithGoogle: () => Promise<void>;
   signInWithEmail: (email: string, password: string) => Promise<void>;
@@ -29,14 +30,26 @@ const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [localUser, setLocalUser] = useState<any>(getLocalUser());
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Listen to firebase auth changes
     const unsub = onAuthStateChanged(auth, (u) => {
       setUser(u);
       setLoading(false);
     });
-    return () => unsub();
+
+    // Listen to local auth state change events
+    const handleLocalAuthChange = () => {
+      setLocalUser(getLocalUser());
+    };
+    window.addEventListener("local-auth-change", handleLocalAuthChange);
+
+    return () => {
+      unsub();
+      window.removeEventListener("local-auth-change", handleLocalAuthChange);
+    };
   }, []);
 
   const signInWithGoogle = async () => {
@@ -73,21 +86,66 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const logout = async () => {
     try { await signOut(auth); } catch { /* ignore */ }
-    try { setLocalAuthed(false); } catch { /* ignore */ }
+    try {
+      setLocalAuthed(false);
+      setLocalUser(null);
+    } catch { /* ignore */ }
   };
 
   const loginLocal = async (username: string, password: string) => {
-    // Fixed credentials requirement
+    // 1. Check default credentials requirement
     if (username === "subhan" && password === "subhan123") {
-      setLocalAuthed(true);
+      const defaultUser = {
+        uid: "admin_subhan",
+        displayName: "Subhan Shahid",
+        email: "admin@clinic.com",
+        role: "admin",
+      };
+      setLocalAuthed(true, defaultUser);
+      setLocalUser(defaultUser);
       return;
     }
+
+    // 2. Query users collection in Firestore
+    try {
+      const userDoc = await findUserByUsername(username);
+      if (userDoc) {
+        if (userDoc.password === password) {
+          if (userDoc.status === "inactive") {
+            throw new Error("Your account has been deactivated. Please contact an admin.");
+          }
+          const loggedUser = {
+            uid: userDoc.id,
+            displayName: userDoc.fullName,
+            email: userDoc.email,
+            role: userDoc.role,
+          };
+          setLocalAuthed(true, loggedUser);
+          setLocalUser(loggedUser);
+          return;
+        } else {
+          throw new Error("Invalid username or password");
+        }
+      }
+    } catch (e: any) {
+      throw new Error(e.message || "Invalid username or password");
+    }
+
     throw new Error("Invalid username or password");
   };
 
   const value = useMemo(
-    () => ({ user, loading, signInWithGoogle, signInWithEmail, signUpWithEmail, resetPassword, loginLocal, logout }),
-    [user, loading]
+    () => ({
+      user: localUser || user,
+      loading,
+      signInWithGoogle,
+      signInWithEmail,
+      signUpWithEmail,
+      resetPassword,
+      loginLocal,
+      logout,
+    }),
+    [user, localUser, loading]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

@@ -29,7 +29,7 @@ const PageTransition = ({ children, className = "" }: PageTransitionProps) => {
     type: "tween",
     ease: "anticipate",
     duration: 0.4
-  };
+  } as const;
 
   return (
     <motion.div
