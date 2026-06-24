@@ -58,7 +58,7 @@ export default function Staff() {
 
     const staffData = {
       ...formData,
-      role: formData.role as 'admin' | 'therapist' | 'receptionist',
+      role: formData.role as 'admin' | 'doctor' | 'receptionist',
       schedule: [
         { day: "Monday", startTime: "08:00", endTime: "17:00", isAvailable: true },
         { day: "Tuesday", startTime: "08:00", endTime: "17:00", isAvailable: true },
@@ -134,7 +134,7 @@ export default function Staff() {
   )
 
   const activeStaff = staff.filter(member => member.status === 'active')
-  const therapists = staff.filter(member => member.role === 'therapist' && member.status === 'active')
+  const doctors = staff.filter(member => member.role === 'doctor' && member.status === 'active')
 
   return (
     <div className="space-y-6">
@@ -220,7 +220,7 @@ export default function Staff() {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="admin">Admin</SelectItem>
-                      <SelectItem value="therapist">Therapist</SelectItem>
+                      <SelectItem value="doctor">Doctor</SelectItem>
                       <SelectItem value="receptionist">Receptionist</SelectItem>
                     </SelectContent>
                   </Select>
@@ -311,11 +311,11 @@ export default function Staff() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-xs sm:text-sm font-medium">Therapists</CardTitle>
+            <CardTitle className="text-xs sm:text-sm font-medium">Doctors</CardTitle>
             <UserCheck className="h-4 w-4 text-secondary" />
           </CardHeader>
           <CardContent>
-            <div className="text-xl sm:text-2xl font-bold">{therapists.length}</div>
+            <div className="text-xl sm:text-2xl font-bold">{doctors.length}</div>
           </CardContent>
         </Card>
 

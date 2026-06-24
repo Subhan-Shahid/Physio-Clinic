@@ -274,7 +274,7 @@ export default function ReceiptDialog({ invoice, isOpen, onOpenChange }: Receipt
     <!-- HEADER -->
     <div class="header">
       <div>
-        <div class="clinic-name">${clinic.name || 'DevOra Physiotherapy'}</div>
+        <div class="clinic-name">${clinic.name || 'DevOra Clinic'}</div>
         <div class="clinic-info">
           ${clinic.address ? `${clinic.address}<br/>` : ''}
           ${clinic.phone ? `<strong>Phone:</strong> ${clinic.phone}` : ''}
@@ -347,7 +347,7 @@ export default function ReceiptDialog({ invoice, isOpen, onOpenChange }: Receipt
 
     <!-- FOOTER -->
     <div class="footer">
-      <div class="thanks">Thank you for choosing ${clinic.name || 'DevOra Physiotherapy'}!</div>
+      <div class="thanks">Thank you for choosing ${clinic.name || 'DevOra Clinic'}!</div>
       <div>Questions? Reach us at ${clinic.email || 'info@devora.com'}</div>
       ${clinic.taxId ? `<div class="tax-id">Tax Registration ID (TRN): ${clinic.taxId}</div>` : ''}
       <div class="signature-row">
@@ -425,7 +425,7 @@ export default function ReceiptDialog({ invoice, isOpen, onOpenChange }: Receipt
             >
               <div>
                 <div style={{ fontSize: 18, fontWeight: 700, color: "#1e3a5f" }}>
-                  {clinic.name || "DevOra Physiotherapy"}
+                  {clinic.name || "DevOra Clinic"}
                 </div>
                 <div style={{ fontSize: 11, color: "#64748b", marginTop: 4, lineHeight: 1.6 }}>
                   {clinic.address && <div>{clinic.address}</div>}
@@ -524,7 +524,7 @@ export default function ReceiptDialog({ invoice, isOpen, onOpenChange }: Receipt
 
             {/* Footer */}
             <div style={{ borderTop: "1px solid #e2e8f0", padding: "14px 28px 20px", textAlign: "center", background: "#f8fafc" }}>
-              <div style={{ fontSize: 12, fontWeight: 600, color: "#475569" }}>Thank you for choosing {clinic.name || "DevOra Physiotherapy"}!</div>
+              <div style={{ fontSize: 12, fontWeight: 600, color: "#475569" }}>Thank you for choosing {clinic.name || "DevOra Clinic"}!</div>
               <div style={{ fontSize: 10, color: "#94a3b8", marginTop: 3 }}>Questions? Reach us at {clinic.email || "info@devora.com"}</div>
               {clinic.taxId && <div style={{ fontSize: 10, color: "#94a3b8", fontFamily: "monospace", marginTop: 3 }}>TRN: {clinic.taxId}</div>}
               <div style={{ display: "flex", justifyContent: "space-between", marginTop: 32, paddingTop: 8 }}>

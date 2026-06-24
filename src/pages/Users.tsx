@@ -66,7 +66,7 @@ export default function Users() {
     fullName: "",
     email: "",
     password: "",
-    role: "therapist" as "admin" | "therapist" | "receptionist",
+    role: "doctor" as "admin" | "doctor" | "receptionist",
     status: "active" as "active" | "inactive",
   })
 
@@ -76,7 +76,7 @@ export default function Users() {
       fullName: "",
       email: "",
       password: "",
-      role: "therapist",
+      role: "doctor",
       status: "active",
     })
     setEditingUser(null)
@@ -202,18 +202,18 @@ export default function Users() {
   const stats = useMemo(() => {
     const total = users.length
     const admins = users.filter((u) => u.role === "admin").length
-    const therapists = users.filter((u) => u.role === "therapist").length
+    const doctors = users.filter((u) => u.role === "doctor").length
     const receptionists = users.filter((u) => u.role === "receptionist").length
     const active = users.filter((u) => u.status === "active").length
 
-    return { total, admins, therapists, receptionists, active }
+    return { total, admins, doctors, receptionists, active }
   }, [users])
 
   const getRoleBadgeVariant = (role: UserAccount["role"]) => {
     switch (role) {
       case "admin":
         return "destructive"
-      case "therapist":
+      case "doctor":
         return "default"
       case "receptionist":
         return "secondary"
@@ -325,7 +325,7 @@ export default function Users() {
                   <Label htmlFor="role" className="text-sm font-medium">Access Role</Label>
                   <Select 
                     value={formData.role} 
-                    onValueChange={(value: "admin" | "therapist" | "receptionist") => 
+                    onValueChange={(value: "admin" | "doctor" | "receptionist") => 
                       setFormData({ ...formData, role: value })
                     }
                   >
@@ -334,7 +334,7 @@ export default function Users() {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="admin">Admin</SelectItem>
-                      <SelectItem value="therapist">Therapist</SelectItem>
+                      <SelectItem value="doctor">Doctor</SelectItem>
                       <SelectItem value="receptionist">Receptionist</SelectItem>
                     </SelectContent>
                   </Select>
@@ -400,11 +400,11 @@ export default function Users() {
 
         <Card className="bg-card shadow-sm hover:shadow-md transition-all duration-300">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-xs sm:text-sm font-medium text-muted-foreground">Therapists</CardTitle>
+            <CardTitle className="text-xs sm:text-sm font-medium text-muted-foreground">Doctors</CardTitle>
             <UserCheck className="h-4 w-4 text-default" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-primary">{stats.therapists}</div>
+            <div className="text-2xl font-bold text-primary">{stats.doctors}</div>
             <p className="text-xs text-muted-foreground mt-1">Clinical access privilege</p>
           </CardContent>
         </Card>

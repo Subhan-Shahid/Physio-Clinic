@@ -46,11 +46,11 @@ export default function Patients() {
     currentCondition: "",
     treatmentGoals: "",
     status: "active" as const,
-    assignedTherapist: "",
+    assignedDoctor: "",
   });
 
-  const therapists = useMemo(() => {
-    const filtered = staff.filter((s) => s.role === 'therapist' && s.status === 'active');
+  const doctors = useMemo(() => {
+    const filtered = staff.filter((s) => s.role === 'doctor' && s.status === 'active');
     const seen = new Set<string>();
     return filtered.filter((t) => {
       const key = `${(t.firstName || '').trim().toLowerCase()} ${(t.lastName || '').trim().toLowerCase()}`;
@@ -88,7 +88,7 @@ export default function Patients() {
       currentCondition: "",
       treatmentGoals: "",
       status: "active",
-      assignedTherapist: "",
+      assignedDoctor: "",
     });
   };
 
@@ -248,15 +248,15 @@ export default function Patients() {
               </div>
 
               <div>
-                <Label htmlFor="assignedTherapist">Assigned Therapist</Label>
-                <Select value={newPatient.assignedTherapist} onValueChange={(value) => setNewPatient({ ...newPatient, assignedTherapist: value })}>
+                <Label htmlFor="assignedDoctor">Assigned Doctor</Label>
+                <Select value={newPatient.assignedDoctor} onValueChange={(value) => setNewPatient({ ...newPatient, assignedDoctor: value })}>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select therapist" />
+                    <SelectValue placeholder="Select doctor" />
                   </SelectTrigger>
                   <SelectContent>
-                    {therapists.map((therapist: Staff) => (
-                      <SelectItem key={therapist.id} value={`${therapist.firstName} ${therapist.lastName}`}>
-                        {therapist.firstName} {therapist.lastName}
+                    {doctors.map((doctor: Staff) => (
+                      <SelectItem key={doctor.id} value={`${doctor.firstName} ${doctor.lastName}`}>
+                        {doctor.firstName} {doctor.lastName}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -406,9 +406,9 @@ export default function Patients() {
                         <strong>Condition:</strong> {patient.currentCondition}
                       </p>
                     )}
-                    {patient.assignedTherapist && (
+                    {patient.assignedDoctor && (
                       <p className="text-sm text-muted-foreground">
-                        <strong>Therapist:</strong> {patient.assignedTherapist}
+                        <strong>Doctor:</strong> {patient.assignedDoctor}
                       </p>
                     )}
                   </div>
@@ -518,10 +518,10 @@ export default function Patients() {
                 </div>
               )}
 
-              {selectedPatient.assignedTherapist && (
+              {selectedPatient.assignedDoctor && (
                 <div>
-                  <Label>Assigned Therapist</Label>
-                  <p>{selectedPatient.assignedTherapist}</p>
+                  <Label>Assigned Doctor</Label>
+                  <p>{selectedPatient.assignedDoctor}</p>
                 </div>
               )}
 
@@ -622,15 +622,15 @@ export default function Patients() {
                   </Select>
                 </div>
                 <div>
-                  <Label htmlFor="editTherapist">Assigned Therapist</Label>
-                  <Select value={selectedPatient.assignedTherapist} onValueChange={(value) => setSelectedPatient({ ...selectedPatient, assignedTherapist: value })}>
+                  <Label htmlFor="editDoctor">Assigned Doctor</Label>
+                  <Select value={selectedPatient.assignedDoctor} onValueChange={(value) => setSelectedPatient({ ...selectedPatient, assignedDoctor: value })}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      {therapists.map((therapist: Staff) => (
-                        <SelectItem key={therapist.id} value={`${therapist.firstName} ${therapist.lastName}`}>
-                          {therapist.firstName} {therapist.lastName}
+                      {doctors.map((doctor: Staff) => (
+                        <SelectItem key={doctor.id} value={`${doctor.firstName} ${doctor.lastName}`}>
+                          {doctor.firstName} {doctor.lastName}
                         </SelectItem>
                       ))}
                     </SelectContent>

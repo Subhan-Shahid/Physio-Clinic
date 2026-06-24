@@ -50,7 +50,7 @@ const adminItems = [
   { title: "Settings", url: "/settings", icon: Settings },
 ]
 
-const therapistItems = [
+const doctorItems = [
   { title: "Dashboard", url: "/", icon: LayoutDashboard },
   { title: "My Patients", url: "/patients", icon: Users },
   { title: "Schedule", url: "/appointments", icon: Calendar },
@@ -78,7 +78,7 @@ export function AppSidebar() {
     ? adminItems
     : userRole === 'receptionist'
       ? receptionistItems
-      : therapistItems
+      : doctorItems
 
   const isCollapsed = state === "collapsed"
   const { stats } = useDashboardStats()
@@ -115,7 +115,7 @@ export function AppSidebar() {
           {!isCollapsed && (
             <div>
               <h1 className="text-white font-bold text-lg">DevOra</h1>
-              <p className="text-white/80 text-xs">Physiotherapy Software</p>
+              <p className="text-white/80 text-xs">Clinic Management Software</p>
             </div>
           )}
         </div>
@@ -156,7 +156,7 @@ export function AppSidebar() {
       <SidebarContent className="px-2">
         <SidebarGroup>
           <SidebarGroupLabel className="text-xs font-semibold text-muted-foreground px-2 mb-2">
-            {userRole === 'admin' ? 'ADMINISTRATION' : 'THERAPY TOOLS'}
+            {userRole === 'admin' ? 'ADMINISTRATION' : 'CLINIC TOOLS'}
           </SidebarGroupLabel>
           
           <SidebarGroupContent>

@@ -39,7 +39,7 @@ export default function Appointments() {
 
   const [newAppointment, setNewAppointment] = useState({
     patientId: "",
-    therapistId: "",
+    doctorId: "",
     date: new Date().toISOString().split('T')[0],
     time: "",
     duration: 60,
@@ -48,8 +48,8 @@ export default function Appointments() {
     notes: "",
   });
 
-  const therapists = useMemo(() => {
-    const filtered = staff.filter((s) => s.role === 'therapist' && s.status === 'active');
+  const doctors = useMemo(() => {
+    const filtered = staff.filter((s) => s.role === 'doctor' && s.status === 'active');
     const seen = new Set<string>();
     return filtered.filter((t) => {
       const key = `${(t.firstName || '').trim().toLowerCase()} ${(t.lastName || '').trim().toLowerCase()}`;
@@ -61,7 +61,7 @@ export default function Appointments() {
 
   const filteredAppointments = appointments.filter(appointment => {
     const matchesSearch = appointment.patientName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      appointment.therapistName.toLowerCase().includes(searchTerm.toLowerCase());
+      appointment.doctorName.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesDate = appointment.date === selectedDate;
     return matchesSearch && matchesDate;
   });
@@ -77,23 +77,23 @@ export default function Appointments() {
   };
 
   const handleAddAppointment = async () => {
-    if (!newAppointment.patientId || !newAppointment.therapistId || !newAppointment.time) {
+    if (!newAppointment.patientId || !newAppointment.doctorId || !newAppointment.time) {
       toast.error("Please fill in all required fields");
       return;
     }
 
     const patient = patients.find((p: any) => p.id === newAppointment.patientId) as any;
-    const therapist = staff.find((s: any) => s.id === newAppointment.therapistId) as any;
+    const doctor = staff.find((s: any) => s.id === newAppointment.doctorId) as any;
 
-    if (!patient || !therapist) {
-      toast.error("Invalid patient or therapist selection");
+    if (!patient || !doctor) {
+      toast.error("Invalid patient or doctor selection");
       return;
     }
 
     const appointmentData = {
       ...newAppointment,
       patientName: `${patient.firstName} ${patient.lastName}`,
-      therapistName: `${therapist.firstName} ${therapist.lastName}`,
+      doctorName: `${doctor.firstName} ${doctor.lastName}`,
     };
 
     await addAppointmentFs(appointmentData);
@@ -101,7 +101,7 @@ export default function Appointments() {
     setIsAddDialogOpen(false);
     setNewAppointment({
       patientId: "",
-      therapistId: "",
+      doctorId: "",
       date: new Date().toISOString().split('T')[0],
       time: "",
       duration: 60,
@@ -176,15 +176,15 @@ export default function Appointments() {
               </div>
 
               <div>
-                <Label htmlFor="therapist">Therapist *</Label>
-                <Select value={newAppointment.therapistId} onValueChange={(value) => setNewAppointment({ ...newAppointment, therapistId: value })}>
+                <Label htmlFor="doctor">Doctor *</Label>
+                <Select value={newAppointment.doctorId} onValueChange={(value) => setNewAppointment({ ...newAppointment, doctorId: value })}>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select therapist" />
+                    <SelectValue placeholder="Select doctor" />
                   </SelectTrigger>
                   <SelectContent>
-                    {therapists.map((therapist: Staff) => (
-                      <SelectItem key={therapist.id} value={therapist.id}>
-                        {therapist.firstName} {therapist.lastName}
+                    {doctors.map((doctor: Staff) => (
+                      <SelectItem key={doctor.id} value={doctor.id}>
+                        {doctor.firstName} {doctor.lastName}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -333,7 +333,7 @@ export default function Appointments() {
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
               id="search"
-              placeholder="Search by patient or therapist name..."
+              placeholder="Search by patient or doctor name..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="pl-10"
@@ -357,7 +357,7 @@ export default function Appointments() {
                   <div className="text-center sm:text-left">
                     <h3 className="font-semibold text-lg">{appointment.patientName}</h3>
                     <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 md:gap-4 text-sm text-muted-foreground">
-                      <span><strong>Therapist:</strong> {appointment.therapistName}</span>
+                      <span><strong>Doctor:</strong> {appointment.doctorName}</span>
                       <span><strong>Time:</strong> {appointment.time}</span>
                       <span><strong>Duration:</strong> {appointment.duration} min</span>
                       <span><strong>Type:</strong> {appointment.type.charAt(0).toUpperCase() + appointment.type.slice(1)}</span>
@@ -445,8 +445,8 @@ export default function Appointments() {
                   <p className="font-medium">{selectedAppointment.patientName}</p>
                 </div>
                 <div>
-                  <Label>Therapist</Label>
-                  <p className="font-medium">{selectedAppointment.therapistName}</p>
+                  <Label>Doctor</Label>
+                  <p className="font-medium">{selectedAppointment.doctorName}</p>
                 </div>
               </div>
               

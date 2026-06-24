@@ -1,4 +1,4 @@
-// Local Storage utilities for DevOra Physiotherapy Software
+// Local Storage utilities for DevOra Clinic Management Software
 
 export interface Patient {
   id: string;
@@ -82,7 +82,7 @@ export interface Staff {
   lastName: string;
   email: string;
   phone: string;
-  role: 'admin' | 'therapist' | 'receptionist';
+  role: 'admin' | 'doctor' | 'receptionist';
   specialization?: string;
   licenseNumber?: string;
   hireDate: string;
@@ -102,7 +102,7 @@ export interface UserAccount {
   username: string;
   fullName: string;
   email: string;
-  role: 'admin' | 'therapist' | 'receptionist';
+  role: 'admin' | 'doctor' | 'receptionist';
   status: 'active' | 'inactive';
   password?: string;
   createdAt: string;
@@ -178,11 +178,11 @@ const DEFAULT_SETTINGS: Settings = {
     lastName: 'Wilson',
     email: 'sarah.wilson@devora.com',
     phone: '+1-555-1001',
-    specialization: 'Orthopedic Physiotherapy',
+    specialization: 'General Medicine',
     licenseNumber: 'PT-12345',
   },
   clinic: {
-    name: 'DevOra Physiotherapy',
+    name: 'DevOra Clinic',
     address: '123 Healthcare Drive, Medical District',
     phone: '+1-555-0100',
     email: 'info@devora.com',
@@ -405,8 +405,8 @@ export const staffStorage = {
     storage.update<Staff>(STORAGE_KEYS.STAFF, id, updates),
   delete: (id: string) => storage.delete(STORAGE_KEYS.STAFF, id),
   getById: (id: string) => storage.get<Staff>(STORAGE_KEYS.STAFF).find(s => s.id === id),
-  getTherapists: () => 
-    storage.get<Staff>(STORAGE_KEYS.STAFF).filter(s => s.role === 'therapist' && s.status === 'active'),
+  getDoctors: () => 
+    storage.get<Staff>(STORAGE_KEYS.STAFF).filter(s => s.role === 'doctor' && s.status === 'active'),
 };
 
 export const notificationStorage = {

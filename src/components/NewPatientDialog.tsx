@@ -15,7 +15,7 @@ interface NewPatientDialogProps {
 
 export function NewPatientDialog({ open, onOpenChange }: NewPatientDialogProps) {
   const { toast } = useToast()
-  const therapists = staffStorage.getTherapists()
+  const doctors = staffStorage.getDoctors()
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -29,7 +29,7 @@ export function NewPatientDialog({ open, onOpenChange }: NewPatientDialogProps) 
     medicalHistory: "",
     currentCondition: "",
     treatmentGoals: "",
-    assignedTherapist: "",
+    assignedDoctor: "",
   })
 
   const resetForm = () => {
@@ -45,7 +45,7 @@ export function NewPatientDialog({ open, onOpenChange }: NewPatientDialogProps) 
       medicalHistory: "",
       currentCondition: "",
       treatmentGoals: "",
-      assignedTherapist: "",
+      assignedDoctor: "",
     })
   }
 
@@ -138,18 +138,18 @@ export function NewPatientDialog({ open, onOpenChange }: NewPatientDialogProps) 
                 />
               </div>
               <div>
-                <Label htmlFor="assignedTherapist">Assigned Therapist</Label>
+                <Label htmlFor="assignedDoctor">Assigned Doctor</Label>
                 <Select 
-                  value={formData.assignedTherapist} 
-                  onValueChange={(value) => setFormData({...formData, assignedTherapist: value})}
+                  value={formData.assignedDoctor} 
+                  onValueChange={(value) => setFormData({...formData, assignedDoctor: value})}
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder="Select therapist" />
+                    <SelectValue placeholder="Select doctor" />
                   </SelectTrigger>
                   <SelectContent>
-                    {therapists.map((therapist) => (
-                      <SelectItem key={therapist.id} value={`${therapist.firstName} ${therapist.lastName}`}>
-                        {therapist.firstName} {therapist.lastName}
+                    {doctors.map((doctor) => (
+                      <SelectItem key={doctor.id} value={`${doctor.firstName} ${doctor.lastName}`}>
+                        {doctor.firstName} {doctor.lastName}
                       </SelectItem>
                     ))}
                   </SelectContent>
